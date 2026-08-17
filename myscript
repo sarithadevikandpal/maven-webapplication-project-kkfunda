@@ -1,0 +1,32 @@
+node
+{
+def maven = tool "maven3.9.16"
+stage('gitcheckout')
+{
+git 'https://github.com/sarithadevikandpal/maven-webapplication-project-kkfunda.git'
+}
+stage('compile')
+{
+sh "${maven}/bin/mvn compile"
+}
+stage('build')
+{
+sh "${maven}/bin/mvn clean package"
+}
+stage('sq report')
+{
+sh "${maven}/bin/mvn sonar:sonar"
+}
+stage('Nexus')
+{
+sh "${maven}/bin/mvn deploy"
+}
+stage('Deploy to Tomcat')
+{
+    sh """
+        curl -u saritha:saritha \
+        --upload-file target/maven-web-application.war \
+        "http://32.197.119.149:8080/manager/text/deploy?path=/maven-web-application&update=true"
+    """
+}
+}
