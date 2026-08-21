@@ -26,7 +26,7 @@ stage('Deploy to Tomcat')
     sh """
         curl -u saritha:saritha \
         --upload-file target/maven-web-application.war \
-        "http://100.30.226.74/:8080/manager/text/deploy?path=/maven-web-application&update=true"
+        "http://100.30.231.216:8080/manager/text/deploy?path=/maven-web-application&update=true"
     """
 }
 }
